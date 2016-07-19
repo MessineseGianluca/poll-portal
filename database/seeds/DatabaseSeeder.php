@@ -35,21 +35,42 @@ class DatabaseSeeder extends Seeder
             'start_date' => '20150722',
             'end_date' => '20160222',
         ]);
+
+
         
-        //seeds random questions
+        /* seeds random questions 
+         *   type a: opened answer
+         *   type b: single answer
+         *   type c: multiple answer
+         */
         $charset = 'abc';
-        for($i = 1; $i < 5; $i++) {
+        $polls = DB::table('polls')->get();
+
+        foreach($polls as $poll) {
         	for($j = 0; $j < 10; $j++) {
         		DB::table('questions')->insert([
           	        'text' => str_random(20) . "?",
           			'type' => substr(str_shuffle($charset), 0, 1),
-          			'poll_id' => $i,
+          			'poll_id' => $poll->id,
         		]);
         	}
         }
 
-        //seeds random options
-        
+
+
+        /* seeds random options */		
+		$questions = DB::table('questions')
+                              ->whereIn('type', array('b', 'c'))
+                              ->get();
+
+        foreach ($questions as $question) {
+           	for($i = 0; $i < 4; $i++) {
+           		DB::table('options')->insert([                      
+            	    'text' => str_random(20) . ".",
+            	    'ques_id' => $question->id,
+            	]);
+            }
+        }
 
     }
 }
