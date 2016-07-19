@@ -11,10 +11,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-    	//seed random poolls
+      
+        /* seed user */
+        DB::table('users')->insert([
+            'name' => 'Gianluca',
+            'surname' => 'Messinese',
+            'password' => bcrypt('ciaociao'),
+            'email' => 'gianluca.messi1@gmail.com',
+            'admin' => true,
+        ]);
+
+    	  /* seed random poolls */
         DB::table('polls')->insert([
             'title' => str_random(15),
-            'start_date' => '20160721',
+            'start_date' => '20160719',
             'end_date' => '20170721',
         ]);
 
@@ -59,9 +69,9 @@ class DatabaseSeeder extends Seeder
 
 
         /* seeds random options */		
-		$questions = DB::table('questions')
-                              ->whereIn('type', array('b', 'c'))
-                              ->get();
+		    $questions = DB::table('questions')
+                            ->whereIn('type', array('b', 'c'))
+                            ->get();
 
         foreach ($questions as $question) {
            	for($i = 0; $i < 4; $i++) {

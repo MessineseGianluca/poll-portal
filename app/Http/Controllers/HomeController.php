@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use DB;
 
 class HomeController extends Controller
 {
@@ -23,7 +24,28 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('home');
+    {          
+        
+        $opened_polls = DB::table('polls')
+                            ->where('start_date', '<=', date('Y-m-d'))
+                            ->where('end_date', '>', date('Y-m-d'))
+                            ->get();
+
+        $closed_polls = DB::table('polls')
+                            ->where('end_date', '<=', date('Y-m-d'))
+                            ->get();
+        
+        $incoming_polls = DB::table('polls')
+                            ->where('start_date', '>', date('Y-m-d'))
+                            ->get();
+
+        return view(  
+                      'home', 
+                      [
+                        'opened_polls' => $opened_polls, 
+                        'closed_polls' => $closed_polls, 
+                        'incoming_polls' => $incoming_polls 
+                      ] 
+                    );
     }
 }
