@@ -18,3 +18,6 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/home/opened/{poll}', 'PollsController@index');
+Route::post('/home/opened/{poll}', 'PollsController@answer');
+Route::get('/home/closed/{poll}', 'PollsController@show_result');
