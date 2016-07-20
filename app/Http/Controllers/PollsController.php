@@ -33,7 +33,7 @@ class PollsController extends Controller
 
         /* check if the poll is closed */
         elseif($poll->end_date <= date('Y-m-d'))
-            return redirect('/home/closed/$id');
+            return redirect('/home/closed/' . $id);
         
         /*check if the poll is incoming */
         elseif($poll->start_date > date('Y-m-d')) {
@@ -54,7 +54,7 @@ class PollsController extends Controller
         return view(
                      'compile', 
                      [
-                       'title' => $poll->title,
+                       'poll' => $poll,
                        'questions' => $questions,
                      ]
         );
