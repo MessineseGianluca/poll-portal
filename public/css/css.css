@@ -1,0 +1,23 @@
+body {
+    font-family: 'Lato';
+}
+
+.fa-btn {
+    margin-right: 6px;
+}
+
+.poll-title {
+	text-align: center;
+}
+
+.poll-title h1 {
+	margin-bottom: 0;
+}
+
+form {
+	margin-bottom: 10em;
+}
+
+.submit {
+	margin-top: 40px;
+}

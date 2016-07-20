@@ -2,47 +2,68 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row poll-title">
         <div class="col-lg-10 col-lg-offset-1">
-            <h1> {{ $poll->title }} </h1>
+            <h1><small> {{ $poll->title }}</small></h1>
         </div>
     </div>
     <form action='/home/opened/{{ $poll->id }}' method='post'>
-    @foreach ($questions as $question)
+      @foreach ($questions as $question)
         <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 questions">
-                <h2> {{ $question->text }}</h2>
-                @if($question->type !== 'a')  
+            <div class="col-lg-6 col-lg-offset-3 questions">
+              <h2><small> · {{ $question->text }}</small></h2>
+                
+              <div class="row">
+                <div class="col-lg-8 col-lg-offset-1">
+                @if($question->type !== 'a') 
+
                     @if( $question->type == 'b' )
-      	    	
+            	    	
             	    	@foreach($question->options as $option)
                             
-                	    	<br>         
-                	    	<input type="radio" 
-                	    	       name="answer_ques_{{ $question->id }}"
-                	    	       value="{{ $option->id }}">{{ $option->text }}
-  							    
+                          <div class="radio">
+  						    <label>      
+                	    	  <input type="radio" 
+                	    	         name="answered_ques_{{ $question->id }}"
+                	    	         value="{{ $option->id }}">{{ $option->text }}
+  							</label>
+  						  </div>
+
                     	@endforeach
                         
                     @else 
 
                         @foreach($question->options as $option)
                             
-                            <br>
-                	    	<input type='checkbox' 
-                	    	       name='answer_ques_{{ $question->id }}[]' 
-                	    	       value='{{ $option->id }}'>{{ $option->text }}
-                    
+                            <div class="checkbox">
+    						  <label>
+                	    	    <input type='checkbox' 
+                	    	           name='answered_ques_{{ $question->id }}[]' 
+                	    	           value='{{ $option->id }}'>{{ $option->text }}
+                              </label>
+                            </div>
+
                     	@endforeach
 
                     @endif
 
             	@else
-            	  <textarea> insert answer here... </textarea>
+            	  <textarea class="form-control" 
+            	            rows="2"
+            	            placeholder="insert answer here..." 
+            	            required></textarea>
             	@endif
+            	</div>
+              </div>
             </div>
         </div>
-    @endforeach
+
+      @endforeach
+      <div class="row submit">
+        <div class="col-lg-6 col-lg-offset-5">
+          <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+      </div>
     </form>
 </div>
 @endsection
