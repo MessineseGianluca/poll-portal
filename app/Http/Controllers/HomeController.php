@@ -27,16 +27,16 @@ class HomeController extends Controller
     {          
         
         $opened_polls = DB::table('polls')
-                            ->where('start_date', '<=', date('Y-m-d'))
-                            ->where('end_date', '>', date('Y-m-d'))
+                            ->where('start_date', '<=', date('Y-m-d h:i:sa'))
+                            ->where('end_date', '>', date('Y-m-d h:i:sa'))
                             ->get();
 
         $closed_polls = DB::table('polls')
-                            ->where('end_date', '<=', date('Y-m-d'))
+                            ->where('end_date', '<=', date('Y-m-d h:i:sa'))
                             ->get();
         
         $incoming_polls = DB::table('polls')
-                            ->where('start_date', '>', date('Y-m-d'))
+                            ->where('start_date', '>', date('Y-m-d h:i:sa'))
                             ->get();
 
         return view(  
@@ -46,6 +46,6 @@ class HomeController extends Controller
                         'closed_polls' => $closed_polls, 
                         'incoming_polls' => $incoming_polls 
                       ] 
-                    );
+        );
     }
 }

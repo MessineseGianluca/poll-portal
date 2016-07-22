@@ -46,6 +46,12 @@ class DatabaseSeeder extends Seeder
             'end_date' => '20160222',
         ]);
 
+        DB::table('polls')->insert([
+            'title' => str_random(15),
+            'start_date' => '20170904',
+            'end_date' => '20181119',
+        ]);
+
 
         
         /* seeds random questions 

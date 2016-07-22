@@ -8,6 +8,9 @@
         </div>
     </div>
     <form action='/home/opened/{{ $poll->id }}' method='post'>
+      
+      {{ csrf_field() }}
+
       @foreach ($questions as $question)
         <div class="row">
             <div class="col-lg-6 col-lg-offset-3 questions">
@@ -21,13 +24,13 @@
             	    	
             	    	@foreach($question->options as $option)
                             
-                          <div class="radio">
-  						    <label>      
+                      <div class="radio">
+  						          <label>      
                 	    	  <input type="radio" 
                 	    	         name="answered_ques_{{ $question->id }}"
                 	    	         value="{{ $option->id }}">{{ $option->text }}
-  							</label>
-  						  </div>
+  							        </label>
+  						        </div>
 
                     	@endforeach
                         
@@ -36,10 +39,10 @@
                         @foreach($question->options as $option)
                             
                             <div class="checkbox">
-    						  <label>
-                	    	    <input type='checkbox' 
-                	    	           name='answered_ques_{{ $question->id }}[]' 
-                	    	           value='{{ $option->id }}'>{{ $option->text }}
+    						              <label>
+                	    	        <input type='checkbox' 
+                	    	               name='answered_ques_{{ $question->id }}[]' 
+                	    	               value='{{ $option->id }}'>{{ $option->text }}
                               </label>
                             </div>
 
@@ -50,9 +53,12 @@
             	@else
             	  <textarea class="form-control" 
             	            rows="2"
-            	            placeholder="insert answer here..." 
+                          maxlength="255"
+                          name="answered_ques_{{ $question->id }}"
+            	            placeholder="insert answer here(max 255)..." 
             	            required></textarea>
             	@endif
+
             	</div>
               </div>
             </div>
