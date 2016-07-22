@@ -21,3 +21,7 @@ form {
 .submit {
 	margin-top: 40px;
 }
+
+.answered {
+	margin-bottom: 6em;
+}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class PollsController extends Controller
 {
@@ -23,10 +24,20 @@ class PollsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $id)
-    {          
+    public function index(Request $request, $poll_id)
+    {   
+        /* Check if the user has already done the poll */       
+        $user = Auth::user();
+        $join = DB::table('joins')
+                        ->where('poll_id', $poll_id)
+                        ->where('user_id', $user->id)
+                        ->count();
+        if($join > 0) 
+            return redirect('/home');
+        
+        /* get poll informations */
         $poll = DB::table('polls')
-                        ->where('id', $id)->first();
+                        ->where('id', $poll_id)->first();
         
         /* check if $id is wrong and then poll doesn't exist */ 
         if(!is_object ( $poll )) 
@@ -34,7 +45,7 @@ class PollsController extends Controller
 
         /* check if the poll is closed */
         elseif($poll->end_date <= date('Y-m-d h:i:sa'))
-            return redirect('/home/closed/' . $id);
+            return redirect('/home/closed/' . $poll_id);
         
         /*check if the poll is incoming */
         elseif($poll->start_date > date('Y-m-d h:i:sa')) {
@@ -42,7 +53,7 @@ class PollsController extends Controller
         }
 
         $questions = DB::table('questions')
-                            ->where('poll_id', $id)
+                            ->where('poll_id', $poll_id)
                             ->get();
 
         foreach ($questions as $key => $question) {
@@ -79,25 +90,36 @@ class PollsController extends Controller
             if(is_array($answer)) {
 
                 foreach ($answer as $option) {
-                    $options = DB::table('answers')
+                    DB::table('answers')
                         ->insert(
-                            array(
-                              'ques_id' => $ques_id, 
-                              'content' => $option
-                            )
+                                array(
+                                    'ques_id' => $ques_id, 
+                                    'content' => $option
+                                )
                         );
                 }   
             }
+
             else {
-                $options = DB::table('answers')
-                             ->insert(
-                                array(
-                                  'ques_id' => $ques_id, 
-                                  'content' => $answer
-                                )
-                            );
+                DB::table('answers')
+                    ->insert(
+                            array(
+                                'ques_id' => $ques_id, 
+                                'content' => $answer
+                            )
+                    );
             }
         }
+
+        /* Store the poll joining information */
+        $user = Auth::user();
+        DB::table('joins')
+            ->insert(
+                    array(
+                        'poll_id' => $id, 
+                        'user_id' => $user->id
+                    )
+            );
 
         return redirect('/home');
         

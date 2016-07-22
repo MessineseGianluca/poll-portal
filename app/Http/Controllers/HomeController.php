@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -38,13 +39,22 @@ class HomeController extends Controller
         $incoming_polls = DB::table('polls')
                             ->where('start_date', '>', date('Y-m-d h:i:sa'))
                             ->get();
+        
+        $user = Auth::user();
+        $answered_polls = DB::table('joins')
+                            ->join('polls', function($join){
+                                 $join->on('joins.poll_id', '=', 'polls.id');
+                            })
+                            ->where('joins.user_id', '=', $user->id)
+                            ->get();                                      
 
         return view(  
                       'home', 
                       [
                         'opened_polls' => $opened_polls, 
                         'closed_polls' => $closed_polls, 
-                        'incoming_polls' => $incoming_polls 
+                        'incoming_polls' => $incoming_polls,
+                        'answered_polls' => $answered_polls
                       ] 
         );
     }
