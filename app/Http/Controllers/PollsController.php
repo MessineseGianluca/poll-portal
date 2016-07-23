@@ -175,7 +175,7 @@ class PollsController extends Controller
             }
             
             /* single answer question */
-            else if($question->type == 'b') {
+            else if($question->type == 'b' || $question->type =='c') {
 
                 $options = DB::table('options')
                                ->select('id', 'text')
@@ -200,7 +200,7 @@ class PollsController extends Controller
 
             print_r($questions[$key]);
             echo "<br><br><br>";
-
+            
         }                
         
 
