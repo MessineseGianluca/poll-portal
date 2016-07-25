@@ -14,7 +14,7 @@ body {
 	margin-bottom: 0;
 }
 
-form {
+.questions {
 	margin-bottom: 10em;
 }
 
@@ -26,3 +26,21 @@ form {
 	margin-bottom: 6em;
 }
 
+.none {
+	margin-bottom: 20px;
+}
+
+.see-more {
+	text-align: center;
+}
+
+.see-more button {
+	color: blue;
+	background-color: Transparent;
+	border: 0;
+	outline:none;
+}
+
+.see-more .glyphicon {
+	vertical-align:sub;
+}

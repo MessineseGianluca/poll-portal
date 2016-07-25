@@ -171,7 +171,7 @@ class PollsController extends Controller
             /* opened questions */
             if($question->type == 'a') {                           
                 //link answers to the relative question 
-                $questions[$key]->answers = $answers;
+                $questions[$key]->options = $answers;
             }
             
             /* single answer question */
@@ -194,13 +194,14 @@ class PollsController extends Controller
                                           ->count();
                     /* Calculate the percentual */
                     $percentual = $num_of_answers / $tot_num_of_answers * 100;
+                    $percentual = round($percentual, 1);  
                     $questions[$key]->options[$o_key]->percentual = $percentual;
                 }
             }
 
-            print_r($questions[$key]);
+            /*print_r($questions[$key]);
             echo "<br><br><br>";
-            
+            */
         }                
         
 

@@ -2,18 +2,19 @@
 
 @section('content')
 <div class="container">
-    <div class="row poll-title">
-        <div class="col-lg-10 col-lg-offset-1">
-            <h1><small> {{ $poll->title }}</small></h1>
-        </div>
+  <div class="row poll-title">
+    <div class="col-lg-10 col-lg-offset-1">
+      <h1><small> {{ $poll->title }}</small></h1>
     </div>
+  </div>
+  <div class="questions">
     <form action='/home/opened/{{ $poll->id }}' method='post'>
       
       {{ csrf_field() }}
 
       @foreach ($questions as $question)
         <div class="row">
-            <div class="col-lg-6 col-lg-offset-3 questions">
+            <div class="col-lg-6 col-lg-offset-3">
               <h2><small> · {{ $question->text }}</small></h2>
                 
               <div class="row">
@@ -71,5 +72,6 @@
         </div>
       </div>
     </form>
+  </div>
 </div>
 @endsection
