@@ -16,7 +16,7 @@
               <h2><small> · {{ $question->text }}</small></h2>
                 
               <div class="row">
-                <div class="col-lg-8 col-lg-offset-1 opened-answers">
+                <div class="col-lg-12 opened-answers">
                   
                   @if($question->type == 'a') 
 
@@ -36,7 +36,7 @@
                         @endif  
                           	  
                           <div class="col-lg-12">
-                            {{ $option->content }}
+                            <p>{{ $option->content }}</p>
                           </div>
                         </div> 
 
