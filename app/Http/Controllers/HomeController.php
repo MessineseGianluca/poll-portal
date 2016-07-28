@@ -64,13 +64,26 @@ class HomeController extends Controller
         return view('account');
     }
 
-    public function change_password()
+    public function change_password(Request $request)
     {
+
 
     }
 
-    public function change_email()
+    public function change_email(Request $request)
     {
-        
+        $input = $request->all();
+
+        if($input['old_email'] === Auth::user()->email) {
+            DB::table('users')
+            ->where('email', $input['old_email'])
+            ->update(['email' => $input['new_email']]);
+        }
+
+        else {
+            /* error */
+        }
+
+        return redirect('/account');
     }
 }
