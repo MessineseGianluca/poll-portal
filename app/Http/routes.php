@@ -21,3 +21,6 @@ Route::get('/home', 'HomeController@index');
 Route::get('/home/opened/{poll}', 'PollsController@index');
 Route::post('/home/opened/{poll}', 'PollsController@answer');
 Route::get('/home/closed/{poll}', 'PollsController@show_result');
+Route::get('/account', 'HomeController@account_info');
+Route::put('/account/password', 'HomeController@change_password');
+Route::put('/account/email', 'HomeController@change_email');

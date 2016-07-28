@@ -58,4 +58,19 @@ class HomeController extends Controller
                       ] 
         );
     }
+
+    public function account_info() 
+    {
+        return view('account');
+    }
+
+    public function change_password()
+    {
+
+    }
+
+    public function change_email()
+    {
+        
+    }
 }
