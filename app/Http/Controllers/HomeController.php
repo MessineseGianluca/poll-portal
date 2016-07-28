@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use Hash;
 
 class HomeController extends Controller
 {
@@ -66,7 +67,30 @@ class HomeController extends Controller
 
     public function change_password(Request $request)
     {
+        $input = $request->all();
+        
+        if($input['new_password'] !== $input['new_password_confirm']) {
+            
+            /* Communicate error */
+            
+            return redirect('/account');
+        }
+       
+        $password = Auth::user()->password;
 
+        if(Hash::check($input['old_password'] ,$password)) {
+            DB::table('users')
+                ->where('id', Auth::user()->id)
+                ->update(['password' => bcrypt($input['new_password'])]);
+            /* Communicate email has been modified successfully */
+        }
+
+        else {
+            
+            /* Communicate error */
+        }
+
+        return redirect('/account');
 
     }
 
@@ -76,12 +100,13 @@ class HomeController extends Controller
 
         if($input['old_email'] === Auth::user()->email) {
             DB::table('users')
-            ->where('email', $input['old_email'])
-            ->update(['email' => $input['new_email']]);
+                ->where('email', $input['old_email'])
+                ->update(['email' => $input['new_email']]);
+            /* Communicate email has been modified successfully */
         }
 
         else {
-            /* error */
+            /* Communicate error */
         }
 
         return redirect('/account');

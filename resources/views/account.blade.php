@@ -65,7 +65,7 @@
  					<input type="password"
  					       name="old_password" 
  					       class="form-control" 
- 					       placeholder="Your new email..." 
+ 					       placeholder="Your old password..." 
  					       aria-describedby="sizing-addon1">
 				</div>
 				<div class="input-group input-group-lg">
