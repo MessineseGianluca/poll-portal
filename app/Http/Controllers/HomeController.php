@@ -118,9 +118,6 @@ class HomeController extends Controller
 
         $user = Auth::user();
         if($input['old_email'] === $user->email) {
-            /*DB::table('users')
-                ->where('email', $input['old_email'])
-                ->update(['email' => $input['new_email']]);*/
 
             $user = User::find($user->id);
             $user->email = $input['new_email'];
