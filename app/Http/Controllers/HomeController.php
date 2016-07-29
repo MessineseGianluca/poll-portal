@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use DB;
 use Auth;
 use Hash;
+use App\Poll;
+use App\User;
+use DB;
+
 
 class HomeController extends Controller
 {
@@ -26,41 +29,38 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {          
-        
-        $opened_polls = DB::table('polls')
-                            ->where('start_date', '<=', date('Y-m-d h:i:sa'))
+    {
+        $opened_polls = Poll::where('start_date', '<=', date('Y-m-d h:i:sa'))
                             ->where('end_date', '>', date('Y-m-d h:i:sa'))
                             ->get();
 
-        $closed_polls = DB::table('polls')
-                            ->where('end_date', '<=', date('Y-m-d h:i:sa'))
-                            ->get();
-        
-        $incoming_polls = DB::table('polls')
-                            ->where('start_date', '>', date('Y-m-d h:i:sa'))
-                            ->get();
-        
-        $user = Auth::user();
-        $answered_polls = DB::table('joins')
-                            ->join('polls', function($join){
-                                 $join->on('joins.poll_id', '=', 'polls.id');
-                            })
-                            ->where('joins.user_id', '=', $user->id)
-                            ->get();                                      
 
-        return view(  
-                      'home', 
+        $closed_polls = Poll::where('end_date', '<=', date('Y-m-d h:i:sa'))
+                            ->get();
+
+        $incoming_polls = Poll::where('start_date', '>', date('Y-m-d h:i:sa'))
+                            ->get();
+
+        $joins = User::find(Auth::user()->id)->with('polls')->get();
+
+        foreach($joins as $join) {
+            foreach($join->polls as $poll) {
+                $answered_polls[] = $poll->title;
+            }
+        }
+
+        return view(
+                      'home',
                       [
-                        'opened_polls' => $opened_polls, 
-                        'closed_polls' => $closed_polls, 
+                        'opened_polls' => $opened_polls,
+                        'closed_polls' => $closed_polls,
                         'incoming_polls' => $incoming_polls,
                         'answered_polls' => $answered_polls
-                      ] 
+                      ]
         );
     }
 
-    public function account_info() 
+    public function account_info()
     {
         return view('account');
     }
@@ -74,25 +74,32 @@ class HomeController extends Controller
         ]);
 
         $input = $request->all();
-        
+
         if($input['new_password'] !== $input['new_password_confirm']) {
-            
+
             /* Communicate error */
-            
+
             return redirect('/account');
         }
-       
+
+        if($input['old_password'] === $input['new_password']) {
+
+            /* Communicate Error */
+
+            return redirect('/account');
+        }
+
         $password = Auth::user()->password;
 
-        if(Hash::check($input['old_password'] ,$password)) {
-            DB::table('users')
-                ->where('id', Auth::user()->id)
-                ->update(['password' => bcrypt($input['new_password'])]);
+        if(Hash::check($input['old_password'], $password)) {
+            $user = User::find(Auth::user()->id);
+            $user->password = bcrypt($input['new_password']);
+            $user->save();
             /* Communicate email has been modified successfully */
         }
 
         else {
-            
+
             /* Communicate error */
         }
 
@@ -109,10 +116,15 @@ class HomeController extends Controller
 
         $input = $request->all();
 
-        if($input['old_email'] === Auth::user()->email) {
-            DB::table('users')
+        $user = Auth::user();
+        if($input['old_email'] === $user->email) {
+            /*DB::table('users')
                 ->where('email', $input['old_email'])
-                ->update(['email' => $input['new_email']]);
+                ->update(['email' => $input['new_email']]);*/
+
+            $user = User::find($user->id);
+            $user->email = $input['new_email'];
+            $user->save();
             /* Communicate email has been modified successfully */
         }
 
