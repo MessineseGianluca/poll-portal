@@ -67,6 +67,12 @@ class HomeController extends Controller
 
     public function change_password(Request $request)
     {
+        $this->validate($request, [
+            'old_password' => 'required|max:16|min:8',
+            'new_password' => 'required|max:16|min:8',
+            'new_password_confirm' => 'required|max:16|min:8',
+        ]);
+
         $input = $request->all();
         
         if($input['new_password'] !== $input['new_password_confirm']) {
@@ -96,6 +102,11 @@ class HomeController extends Controller
 
     public function change_email(Request $request)
     {
+        $this->validate($request, [
+            'old_email' => 'required|max:255',
+            'new_email' => 'required|unique:users,email|max:255',
+        ]);
+
         $input = $request->all();
 
         if($input['old_email'] === Auth::user()->email) {

@@ -13,6 +13,15 @@
 	<div class="row">
 	  <div class="col-lg-6">
 	  	<h2><small>Change your email</small></h2>
+	    @if (count($errors) > 0)
+    		<div class="alert alert-danger">
+        	<ul>
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+        	</ul>
+    		</div>
+			@endif
 	  	<form action="{{ url('/account/email') }}" method="post">
 	  	  
 	  	  {{ csrf_field() }}
@@ -50,6 +59,15 @@
 	  </div>
 	  <div class="col-lg-6">
 	    <h2><small>Change your password</small></h2>
+	    @if (count($errors) > 0)
+    		<div class="alert alert-danger">
+        	<ul>
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+        	</ul>
+    		</div>
+			@endif
 	  	<form action="{{ url('/account/password') }}" method="post">
 	  	  
 	  	  {{ csrf_field() }}
