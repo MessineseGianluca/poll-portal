@@ -41,7 +41,9 @@ class HomeController extends Controller
         $incoming_polls = Poll::where('start_date', '>', date('Y-m-d h:i:sa'))
                             ->get();
 
-        $joins = User::find(Auth::user()->id)->with('polls')->get();
+        $joins = User::where('id', '=', Auth::user()->id)->with('polls')->get();
+
+        $answered_polls = NULL;
 
         foreach($joins as $join) {
             foreach($join->polls as $poll) {
@@ -50,13 +52,13 @@ class HomeController extends Controller
         }
 
         return view(
-                      'home',
-                      [
-                        'opened_polls' => $opened_polls,
-                        'closed_polls' => $closed_polls,
-                        'incoming_polls' => $incoming_polls,
-                        'answered_polls' => $answered_polls
-                      ]
+            'home',
+            [
+              'opened_polls' => $opened_polls,
+              'closed_polls' => $closed_polls,
+              'incoming_polls' => $incoming_polls,
+              'answered_polls' => $answered_polls
+            ]
         );
     }
 

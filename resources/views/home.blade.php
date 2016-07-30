@@ -8,7 +8,9 @@
                 <div class="panel-heading">Opened polls</div>
                 @foreach ($opened_polls as $poll)
                     <div class="panel-body">
-                      <a href="/home/opened/{{ $poll->id }}">{{ $poll->title }}</a>
+                      <a href="/home/opened/{{ $poll->id }}">
+                        {{ $poll->title }}
+                      </a>
                     </div>
                 @endforeach
             </div>
@@ -20,7 +22,9 @@
                 <div class="panel-heading">Closed polls</div>
                 @foreach ($closed_polls as $poll)
                     <div class="panel-body">
-                      <a href="/home/closed/{{ $poll->id }}">{{ $poll->title }}</a>
+                      <a href="/home/closed/{{ $poll->id }}">
+                        {{ $poll->title }}
+                      </a>
                     </div>
                 @endforeach
             </div>
@@ -42,11 +46,17 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 <div class="panel-heading">Answered polls</div>
-                @foreach ($answered_polls as $poll)
+                @if($answered_polls)
+                  @foreach ($answered_polls as $poll)
                     <div class="panel-body">
                         {{ $poll }}
                     </div>
-                @endforeach
+                  @endforeach
+                @else
+                    <div class="panel-body">
+                        No answered polls.
+                    </div>
+                @endif
             </div>
         </div>
     </div>

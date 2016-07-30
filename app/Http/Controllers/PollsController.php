@@ -6,6 +6,10 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use App\User;
+use App\Poll;
+use App\Question;
+use App\Answer;
 
 class PollsController extends Controller
 {
@@ -28,18 +32,17 @@ class PollsController extends Controller
     {
         /* Check if the user has already done the poll */
         $user = Auth::user();
-        $join = DB::table('poll_user')
-                    ->where('poll_id', $poll_id)
-                    ->where('user_id', $user->id)
-                    ->count();
-        if($join > 0)
-            return redirect('/home');
+        $joins = User::find($user->id)->with('polls')->get();
+        foreach($joins as $join) {
+            foreach($join->polls as $poll) {
+                if($poll->id == $poll_id)
+                   return redirect('/home');
+            }
+        }
 
         /* get poll informations */
-        $poll = DB::table('polls')
-                    ->select('id', 'start_date', 'end_date', 'title')
-                    ->where('id', $poll_id)
-                    ->first();
+        $poll = Poll::where('id', '=', $poll_id)
+                    ->select('id', 'start_date', 'end_date', 'title')->first();
 
         /* check if $id is wrong and then poll doesn't exist */
         if(!is_object ( $poll ))
@@ -54,31 +57,22 @@ class PollsController extends Controller
             return redirect('/home');
         }
 
-        $questions = DB::table('questions')
+        /* Get questions of the current poll */
+        $questions = Question::with('options')
+                         ->whereHas('poll', function($query) use($poll_id) {
+                              $query->where('poll_id', '=', $poll_id);
+                         })
                          ->select('id', 'text', 'type')
-                         ->where('poll_id', $poll_id)
                          ->get();
-
-        foreach ($questions as $key => $question) {
-            $options = DB::table('options')
-                            ->select('id', 'text')
-                            ->where('ques_id', $question->id)
-                            ->get();
-            $questions[$key]->options = $options;
-        }
 
         return view(
             'compile',
-            [
-                'poll' => $poll,
-                'questions' => $questions,
-            ]
+            ['poll' => $poll, 'questions' => $questions, ]
         );
     }
 
-    public function answer(Request $request, $id)
+    public function answer(Request $request, $poll_id)
     {
-
         $input = $request->all();
 
         foreach ($input as $key => $answer) {
@@ -90,51 +84,36 @@ class PollsController extends Controller
                in order to only get the question id */
             $ques_id = substr($key, 14);
 
+            /* A storing answers function... */
+            $insert = function($ques_id, $option) {
+                $answer = new Answer;
+                $answer->ques_id = $ques_id;
+                $answer->content = $option;
+                $answer->save();
+            };
+
             //check if the answer has more than one option(type c)
             if(is_array($answer)) {
-
                 foreach ($answer as $option) {
-                    DB::table('answers')
-                        ->insert(
-                            array(
-                                'ques_id' => $ques_id,
-                                'content' => $option
-                            )
-                        );
+                    $insert($ques_id, $option);
                 }
-            }
-
-            else {
-                DB::table('answers')
-                    ->insert(
-                        array(
-                            'ques_id' => $ques_id,
-                            'content' => $answer
-                        )
-                    );
+            } else {
+                $insert($ques_id, $answer);
             }
         }
 
         /* Store the poll joining information */
         $user = Auth::user();
-        DB::table('poll_user')
-            ->insert(
-                    array(
-                        'poll_id' => $id,
-                        'user_id' => $user->id
-                    )
-            );
+        User::find($user->id)->polls()->attach($poll_id);
 
         return redirect('/home');
-
     }
 
     public function show_result(Request $request, $poll_id) {
-
-        $poll = DB::table('polls')
-                   ->select('id', 'start_date', 'end_date', 'title')
-                   ->where('id', $poll_id)
-                   ->first();
+      /* get the poll's informations */
+      $poll = Poll::where('id', '=', $poll_id)
+                  ->with('users')
+                  ->select('id', 'start_date', 'end_date', 'title')->first();
 
         /* check if $poll_id is wrong and then poll doesn't exist */
         if(!is_object ( $poll ))
@@ -149,24 +128,19 @@ class PollsController extends Controller
         if($poll->start_date > date('Y-m-d h:i:sa'))
             return redirect('/home');
 
-        /* number of joins*/
-        $joins = DB::table('poll_user')
-                     ->where('poll_id', $poll_id)
-                     ->count();
-        if($joins == 0)
-            return redirect('home');
+        /* check if the poll has no joins */
+        $joins = $poll->users()->count();
+        if(!$joins)
+            return redirect('/home');
 
-        $questions = DB::table('questions')
+        $questions = Question::where('poll_id', $poll_id)
+                        ->with('options', 'answers')
                         ->select('id', 'text', 'type')
-                        ->where('poll_id', $poll_id)
                         ->get();
 
         foreach ($questions as $key => $question) {
 
-            $answers = DB::table('answers')
-                           ->select('id', 'content')
-                           ->where('ques_id', $question->id)
-                           ->get();
+            $answers = $question->answers;
 
             /* opened questions */
             if($question->type == 'a') {
@@ -174,23 +148,14 @@ class PollsController extends Controller
                 $questions[$key]->options = $answers;
             }
 
-            /* single answer question */
-            else if($question->type == 'b' || $question->type =='c') {
+            /* single or multiple answer question */
+            else {
+                $tot_num_of_answers = $question->answers()->count();
 
-                $options = DB::table('options')
-                               ->select('id', 'text')
-                               ->where('ques_id', $question->id)
-                               ->get();
-
-                $questions[$key]->options = $options;
-
-                $tot_num_of_answers = DB::table('answers')
-                                          ->where('ques_id', $question->id)
-                                          ->count();
-
-                foreach ($options as $o_key => $option) {
-                    $num_of_answers = DB::table('answers')
-                                          ->where('content', $option->id)
+                foreach ($question->options as $o_key => $option) {
+                    /* Calculate the number of answer with the current option */
+                    $num_of_answers = $question->answers()
+                                          ->where('content', '=', $option->id)
                                           ->count();
                     /* Calculate the percentual */
                     $percentual = $num_of_answers / $tot_num_of_answers * 100;
@@ -199,19 +164,11 @@ class PollsController extends Controller
                 }
             }
 
-            /*print_r($questions[$key]);
-            echo "<br><br><br>";
-            */
         }
-
 
         return view(
             'show',
-            [
-                'poll' => $poll,
-                'questions' => $questions,
-                'joins' => $joins,
-            ]
+            ['poll' => $poll, 'questions' => $questions, 'joins' => $joins,]
         );
     }
 }
