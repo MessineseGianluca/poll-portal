@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Poll;
+use App\Question;
+use App\Option;
+use App\Answer;
 
 class AdminController extends Controller
 {
@@ -32,7 +35,25 @@ class AdminController extends Controller
 
   public function delete_poll($poll_id)
   {
-      $ajhjash = Poll::find($poll_id);
+      //select questions
+      $questions = Question::where('poll_id', '=', $poll_id)
+          ->select('id')
+          ->get();
+          
+      foreach($questions as $question) {
+        //delete all asnwers
+        Answer::where('ques_id', '=', $question->id )
+            ->each(function ($answer, $key) { $answer->delete(); });
+        //delete all options
+        Option::where('ques_id', '=', $question->id )
+            ->each(function ($option, $key) { $option->delete(); });
+        //delete the current question
+        $question->delete();
+      }
+
+      //delete the query
+      Poll::destroy($poll_id);
+
       return redirect('/admin');
   }
 }
