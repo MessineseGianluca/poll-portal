@@ -30,4 +30,8 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Poll');
     }
 
+    public function isAdmin()
+    {
+        return $this->admin;
+    }
 }
