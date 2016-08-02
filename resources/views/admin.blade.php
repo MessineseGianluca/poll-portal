@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-lg-6">
       <h2 class="centered-text"><small> Modify a poll </small></h1>
-      <form action="/admin/" method="get" class="modify-form">
+      <form action="" method="post" class="modify-form">
         <div class="form-group">
           <label for="sel1">Select a poll:</label>
             <select class="form-control modify-select" id="sel1">
@@ -19,6 +19,14 @@
             </select>
             <button class="btn btn-default modify-button" type="button">
               Modify
+              <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+              </span>
+            </button>
+            <button class="btn btn-danger delete-button pull-right"
+                    type="button">
+              Delete
+              <span class="glyphicon glyphicon-trash" aria-hidden="true">
+              </span>
             </button>
           </label>
         </div>
