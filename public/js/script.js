@@ -23,3 +23,9 @@ $( '.delete-button' ).click(function(){
   );
   $( '.modify-form' ).submit();
 });
+
+$( '.poll-select' ).click(function() {
+  $( ' .modify-question ' ).addClass('hidden');
+  id = $( '.poll-select' ).val();
+  $( '.modify-question#' + id ).removeClass('hidden');
+});

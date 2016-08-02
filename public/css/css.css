@@ -57,3 +57,7 @@ body {
 .centered-text {
   text-align: center;
 }
+
+.modify-button, .delete-button {
+  margin: 0;
+}

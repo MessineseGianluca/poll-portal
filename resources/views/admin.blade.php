@@ -10,7 +10,8 @@
     <div class="col-lg-6">
       <h2 class="centered-text"><small> Modify a poll </small></h1>
       <form action="" method="post" class="modify-form">
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+        <input type="hidden"
+               name="_token" value="<?php echo csrf_token(); ?>">
         <div class="form-group">
           <label for="sel1">Select a poll:</label>
             <select class="form-control modify-select" id="sel1">
@@ -18,19 +19,19 @@
                 <option value="{{ $poll->id }}"> {{ $poll->title }} </option>
               @endforeach
             </select>
-            <button class="btn btn-default modify-button" type="button">
-              Modify
-              <span class="glyphicon glyphicon-pencil" aria-hidden="true">
-              </span>
-            </button>
-            <button class="btn btn-danger delete-button pull-right"
-                    type="button">
-              Delete
-              <span class="glyphicon glyphicon-trash" aria-hidden="true">
-              </span>
-            </button>
           </label>
         </div>
+        <button class="btn btn-default modify-button" type="button">
+          Modify
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+          </span>
+        </button>
+        <button class="btn btn-danger delete-button pull-right"
+                type="button">
+          Delete
+          <span class="glyphicon glyphicon-trash" aria-hidden="true">
+          </span>
+        </button>
       </form>
     </div>
     <div class="col-lg-6 centered-text">

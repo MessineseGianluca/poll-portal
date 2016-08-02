@@ -28,9 +28,14 @@ class AdminController extends Controller
       return view('create');
   }
 
-  public function modify_poll_view(Request $request, $poll_id)
+  public function modify_poll_view($poll_id)
   {
-      return view('modify', ['poll' => $poll_id]);
+      $poll = Poll::find($poll_id)
+          ->select('id', 'title')
+          ->with('questions', 'questions.options')
+          ->first();
+
+      return view('modify', ['poll' => $poll]);
   }
 
   public function delete_poll($poll_id)
@@ -39,7 +44,7 @@ class AdminController extends Controller
       $questions = Question::where('poll_id', '=', $poll_id)
           ->select('id')
           ->get();
-          
+
       foreach($questions as $question) {
         //delete all asnwers
         Answer::where('ques_id', '=', $question->id )
