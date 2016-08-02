@@ -10,6 +10,7 @@
     <div class="col-lg-6">
       <h2 class="centered-text"><small> Modify a poll </small></h1>
       <form action="" method="post" class="modify-form">
+        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <div class="form-group">
           <label for="sel1">Select a poll:</label>
             <select class="form-control modify-select" id="sel1">

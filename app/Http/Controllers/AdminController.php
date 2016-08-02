@@ -30,8 +30,9 @@ class AdminController extends Controller
       return view('modify', ['poll' => $poll_id]);
   }
 
-  public function delete_poll(Request $request, $poll_id)
+  public function delete_poll($poll_id)
   {
-      return view('admin', ['polls' => Poll::all()]);
+      $ajhjash = Poll::find($poll_id);
+      return redirect('/admin');
   }
 }
