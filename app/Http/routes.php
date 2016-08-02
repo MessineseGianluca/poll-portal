@@ -15,8 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::auth();
+Route::auth(); // Add routes for login/register/logout
 
+/******************* Registered User Routes ***********************/
 Route::get('/home', 'HomeController@index');
 Route::get('/home/opened/{poll}', 'PollsController@index');
 Route::post('/home/opened/{poll}', 'PollsController@answer');
@@ -25,4 +26,13 @@ Route::get('/account', 'HomeController@account_info');
 Route::put('/account/password', 'HomeController@change_password');
 Route::put('/account/email', 'HomeController@change_email');
 
+/**************************** Admin Routes *************************/
 Route::get('/admin', 'AdminController@index');
+Route::get('/admin/new', 'AdminController@create_poll');
+Route::get('/admin/{poll}', 'AdminController@modify_poll_view');
+Route::put('/admin/poll/{poll}', 'AdminController@modify_poll');
+Route::put('/admin/question/{question}', 'AdminController@modify_question');
+Route::put('/admin/option/{option}', 'AdminController@modify_option');
+Route::delete('/admin/poll/{poll}', 'AdminController@delete_poll');
+Route::delete('/admin/question/{question}', 'AdminController@delete_question');
+Route::delete('/admin/option/{option}', 'AdminController@delete_option');

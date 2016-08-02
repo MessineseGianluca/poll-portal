@@ -53,3 +53,7 @@ body {
 	margin-top: 20px;
 	margin-bottom: 50px;
 }
+
+.centered-text {
+  text-align: center;
+}

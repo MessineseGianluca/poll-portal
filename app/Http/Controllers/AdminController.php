@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Poll;
 
 class AdminController extends Controller
 {
@@ -16,6 +17,16 @@ class AdminController extends Controller
 
   public function index()
   {
-      return view ('admin');
+      return view ('admin', ['polls' => Poll::all()]);
+  }
+
+  public function create_poll()
+  {
+      return view('create');
+  }
+
+  public function modify_poll_view(Request $request, $poll_id)
+  {
+      return view('modify', ['poll' => $poll_id]);
   }
 }
