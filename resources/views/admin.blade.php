@@ -10,8 +10,9 @@
     <div class="col-lg-6">
       <h2 class="centered-text"><small> Modify a poll </small></h1>
       <form action="" method="post" class="modify-form">
-        <input type="hidden"
-               name="_token" value="<?php echo csrf_token(); ?>">
+        {{ csrf_field() }}
+        <input type="hidden" name="_method" value="DELETE" class="spoofing">
+        <input type="submit" class="hidden submit-btn" >
         <div class="form-group">
           <label for="sel1">Select a poll:</label>
             <select class="form-control modify-select" id="sel1">

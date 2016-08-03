@@ -22,18 +22,16 @@ $( '.create-poll' ).click(function() {
 $( '.modify-button' ).click(function() {
   poll = $( '.modify-select' ).val();
   $( '.modify-form' ).attr('action', '/admin/' + poll);
-  $( '.modify-form' ).attr('method', 'get');
-  $( '.modify-form' ).submit();
+  $( '.spoofing' ).attr('value', 'GET');
+  $( '.submit-btn').trigger('click');
 });
 
 $( '.delete-button' ).click(function(){
   poll = $( '.modify-select' ).val();
   $( '.modify-form' ).attr('action', '/admin/poll/' + poll);
   //method spoofing
-  $('.modify-form').append(
-    '<input type="hidden" name="_method" value="DELETE">'
-  );
-  $( '.modify-form' ).submit();
+  $('spoofing').attr('value', 'DELETE');
+  $( '.submit-btn' ).trigger('click');
 });
 /*******************************************************/
 
@@ -63,8 +61,12 @@ $( '.question > .add' ).click(function() {
   alert("add option");
 });
 
+/**** Delete question ****/
 $( '.question > .trash' ).click(function() {
-  alert("delete question");
+  ques_id = $( this ).parent().attr('id');
+  $( '.form' ).attr('action', '/admin/question/' + ques_id);
+  $( '.spoofing' ).attr('value', 'DELETE');
+  $( '.submit-btn' ).trigger( "click" );
 });
 
 $( '.option > .edit ' ).click(function() {
@@ -72,5 +74,8 @@ $( '.option > .edit ' ).click(function() {
 });
 
 $( '.option > .trash ' ).click(function() {
-  alert("delete option");
+  option_id = $( this ).parent().attr('id');
+  $( '.form' ).attr('action', '/admin/option/' + option_id);
+  $( '.spoofing' ).attr('value', 'DELETE');
+  $( '.submit-btn' ).trigger( "click" );
 });

@@ -59,5 +59,10 @@
       @endif
     </div>
   @endforeach
+  <form class="form" action="" method="post">
+    {{ csrf_field() }}
+    <input type="hidden" name="_method" value="DELETE" class="spoofing">
+    <input type="submit" class="hidden submit-btn" >
+  </form>
 </div>
 @endsection
