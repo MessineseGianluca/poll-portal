@@ -5,7 +5,6 @@
   <div class="form-group">
     <label for="sel1">Select a poll:</label>
       <select class="form-control poll-select" id="sel1">
-        <option></option>
         @foreach($poll->questions as $question)
           <option value="{{ $question->id }}">
             {{ $question->text }}
