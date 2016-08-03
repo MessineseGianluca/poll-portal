@@ -17,6 +17,7 @@ $( '.create-poll' ).click(function() {
   window.open('/admin/new', '_self')
 });
 
+
 /********************* DELETE AND MODIFY FORM IN /Admin *******************/
 $( '.modify-button' ).click(function() {
   poll = $( '.modify-select' ).val();
@@ -42,4 +43,34 @@ $( '.poll-select' ).change(function() {
   $( ' .modify-question ' ).addClass('hidden');
   id = $( '.poll-select' ).val();
   $( '.modify-question#' + id ).removeClass('hidden');
+});
+
+
+$( '.poll > .edit' ).click(function() {
+  alert("edit poll");
+});
+
+$( '.poll > .add').click(function() {
+  alert("add a new question");
+});
+
+
+$( '.question > .edit' ).click(function() {
+  alert("edit question");
+});
+
+$( '.question > .add' ).click(function() {
+  alert("add option");
+});
+
+$( '.question > .trash' ).click(function() {
+  alert("delete question");
+});
+
+$( '.option > .edit ' ).click(function() {
+  alert("edit option");
+});
+
+$( '.option > .trash ' ).click(function() {
+  alert("delete option");
 });

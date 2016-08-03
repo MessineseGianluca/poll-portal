@@ -61,3 +61,37 @@ body {
 .modify-button, .delete-button {
   margin: 0;
 }
+
+.inline {
+  display:inline-block;
+}
+
+.gly-top {
+  top: -2px;
+}
+
+.option-margin {
+  margin: 20px 0;
+}
+
+.option + button {
+  margin: 0 5px;
+}
+
+.invisible-btn {
+  background-color: Transparent;
+  border: 0;
+  outline:none;
+}
+
+.trash:hover {
+  color: red;
+}
+
+.edit:hover {
+  color: blue;
+}
+
+.add:hover {
+  color: green;
+}
