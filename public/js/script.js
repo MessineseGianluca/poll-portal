@@ -41,12 +41,18 @@ $( '.poll-select' ).change(function() {
   $( ' .modify-question ' ).addClass('hidden');
   id = $( '.poll-select' ).val();
   $( '.modify-question#' + id ).removeClass('hidden');
+  $( '.form-edit' ).addClass('hidden');
 });
 
 
+/*********** Edit poll_name **************/
 $( '.poll > .edit' ).click(function() {
-  alert("edit poll");
+  poll_text = $( '.poll h1' ).text();
+  poll_id = $( '.poll' ).attr('id');
+  edit('/admin/poll/' + poll_id, 'New poll title:', poll_text);
 });
+
+
 
 $( '.poll > .add').click(function() {
   alert("add a new question");
@@ -54,7 +60,9 @@ $( '.poll > .add').click(function() {
 
 
 $( '.question > .edit' ).click(function() {
-  alert("edit question");
+  question_id = $( this ).parent().attr('id');
+  question_text = $( '.question#' + question_id + ' h1').text();
+  edit('/admin/question/' + question_id, 'New question text:', question_text);
 });
 
 $( '.question > .add' ).click(function() {
@@ -64,18 +72,31 @@ $( '.question > .add' ).click(function() {
 /**** Delete question ****/
 $( '.question > .trash' ).click(function() {
   ques_id = $( this ).parent().attr('id');
-  $( '.form' ).attr('action', '/admin/question/' + ques_id);
-  $( '.spoofing' ).attr('value', 'DELETE');
-  $( '.submit-btn' ).trigger( "click" );
+  $( '.form-delete' ).attr('action', '/admin/question/' + ques_id);
+  $( '.submit-delete-btn' ).trigger( "click" );
 });
 
 $( '.option > .edit ' ).click(function() {
-  alert("edit option");
+  option_id = $( this ).parent().attr('id');
+  option_text = $( '.option#' + option_id + ' p').text();
+  edit('/admin/option/' + option_id, 'New option text:', option_text)
 });
 
 $( '.option > .trash ' ).click(function() {
   option_id = $( this ).parent().attr('id');
-  $( '.form' ).attr('action', '/admin/option/' + option_id);
-  $( '.spoofing' ).attr('value', 'DELETE');
-  $( '.submit-btn' ).trigger( "click" );
+  $( '.form-delete' ).attr('action', '/admin/option/' + option_id);
+  $( '.submit-delete-btn' ).trigger( "click" );
 });
+
+/* Hide form when user clicks cancel button */
+$( '.cancel-edit' ).click(function() {
+  $( '.form-edit' ).addClass('hidden');
+});
+
+/* function for editing polls questions and options' names */
+function edit(url, label_text, placeholder) {
+  $( '.form-edit' ).removeClass('hidden');
+  $( '.form-edit' ).attr('action', url);
+  $( '.label-edit' ).text(label_text);
+  $( '#edit-text' ).attr('placeholder', placeholder);
+}

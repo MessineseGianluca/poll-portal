@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-  <div class="poll centered-text">
+  <div class="poll centered-text" id="{{ $poll->id }}">
     <h1 class="inline"><small>{{ $poll->title }}</small></h1>
     <button class="invisible-btn edit">
       <span class="glyphicon glyphicon-pencil gly-top"
@@ -41,10 +41,8 @@
       @if($question->type != 'c')
         @foreach($question->options as $option)
         <div class="row">
-          <div class="col-lg-12 option">
-            <p id="{{ $option->id}}" class="option-margin inline">
-              {{ $option->text }}
-            </p>
+          <div id="{{ $option->id}}" class="col-lg-12 option">
+            <p class="option-margin inline">{{ $option->text }}</p>
             <button class="invisible-btn edit">
               <span class="glyphicon glyphicon-pencil"
                     aria-hidden="true"></span>
@@ -59,10 +57,26 @@
       @endif
     </div>
   @endforeach
-  <form class="form" action="" method="post">
+  <form class="form-delete" action="" method="post">
     {{ csrf_field() }}
     <input type="hidden" name="_method" value="DELETE" class="spoofing">
-    <input type="submit" class="hidden submit-btn" >
+    <input type="submit" class="hidden submit-delete-btn" >
+  </form>
+
+  <form class="form-edit hidden" action="" method="post">
+    {{ csrf_field() }}
+    <input type="hidden" name="_method" value="PUT" class="spoofing">
+    <div class="form-group">
+      <label class="label-edit" for="edit-text">Some Text:</label>
+      <input type="text" name="title" class="form-control" id="edit-text">
+    </div>
+    <button type="button" class="btn btn-danger cancel-edit pull-right">
+      Cancel
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </button>
+    <button type="submit" class="submit-edit-btn btn btn-default" >
+      Confirm
+    </button>
   </form>
 </div>
 @endsection
