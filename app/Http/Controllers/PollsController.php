@@ -32,7 +32,7 @@ class PollsController extends Controller
     {
         /* Check if the user has already done the poll */
         $user = Auth::user();
-        $joins = User::find($user->id)->with('polls')->get();
+        $joins = User::where('id', '=', $user->id)->with('polls')->get();
         foreach($joins as $join) {
             foreach($join->polls as $poll) {
                 if($poll->id == $poll_id)
@@ -83,22 +83,29 @@ class PollsController extends Controller
             /* Leave "answered_ques_" from the key
                in order to only get the question id */
             $ques_id = substr($key, 14);
+            $question = Question::where('id', '=', $ques_id)
+              ->select('type')
+              ->first();
 
             /* A storing answers function... */
-            $insert = function($ques_id, $option) {
+            $insert = function($ques_id, $option, $question) {
                 $answer = new Answer;
                 $answer->ques_id = $ques_id;
-                $answer->content = $option;
+                if($question->type !== 'a') {
+                  $answer->option_id = $option;
+                } else {
+                  $answer->content = $option;
+                }
                 $answer->save();
             };
 
             //check if the answer has more than one option(type c)
             if(is_array($answer)) {
                 foreach ($answer as $option) {
-                    $insert($ques_id, $option);
+                    $insert($ques_id, $option, $question);
                 }
             } else {
-                $insert($ques_id, $answer);
+                $insert($ques_id, $answer, $question);
             }
         }
 
@@ -154,9 +161,7 @@ class PollsController extends Controller
 
                 foreach ($question->options as $o_key => $option) {
                     /* Calculate the number of answer with the current option */
-                    $num_of_answers = $question->answers()
-                                          ->where('content', '=', $option->id)
-                                          ->count();
+                    $num_of_answers = $option->answers()->count();
                     /* Calculate the percentual */
                     $percentual = $num_of_answers / $tot_num_of_answers * 100;
                     $percentual = round($percentual, 1);

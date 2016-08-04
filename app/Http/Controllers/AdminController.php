@@ -74,4 +74,10 @@ class AdminController extends Controller
     Question::destroy($question_id);
     return redirect('/admin/' . $poll_id);
   }
+
+  public function delete_option($option_id)
+  {
+    $option = Option::where('id', '=', $option_id)->first();
+
+
 }
