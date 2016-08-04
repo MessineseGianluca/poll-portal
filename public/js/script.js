@@ -49,24 +49,24 @@ $( '.poll-select' ).change(function() {
 $( '.poll > .edit' ).click(function() {
   poll_text = $( '.poll h1' ).text();
   poll_id = $( '.poll' ).attr('id');
-  edit('/admin/poll/' + poll_id, 'New poll title:', poll_text);
+  edit('/admin/poll/' + poll_id, 'Change poll title:', poll_text);
 });
 
 
-
-$( '.poll > .add').click(function() {
-  alert("add a new question");
+/************ Add new question ***********/
+$( '.poll > .add-question').click(function() {
+  add('/admin/question/new', 'New question text', 'question');
 });
 
 
 $( '.question > .edit' ).click(function() {
   question_id = $( this ).parent().attr('id');
   question_text = $( '.question#' + question_id + ' h1').text();
-  edit('/admin/question/' + question_id, 'New question text:', question_text);
+  edit('/admin/question/' + question_id, 'Change question text:', question_text);
 });
 
-$( '.question > .add' ).click(function() {
-  alert("add option");
+$( '.question > .add-option' ).click(function() {
+    add('/admin/option/new', 'New option text', 'option');
 });
 
 /**** Delete question ****/
@@ -79,7 +79,7 @@ $( '.question > .trash' ).click(function() {
 $( '.option > .edit ' ).click(function() {
   option_id = $( this ).parent().attr('id');
   option_text = $( '.option#' + option_id + ' p').text();
-  edit('/admin/option/' + option_id, 'New option text:', option_text)
+  edit('/admin/option/' + option_id, 'Change option text:', option_text)
 });
 
 $( '.option > .trash ' ).click(function() {
@@ -95,8 +95,16 @@ $( '.cancel-edit' ).click(function() {
 
 /* function for editing polls questions and options' names */
 function edit(url, label_text, placeholder) {
+  $( '.form-add' ).addClass('hidden');
   $( '.form-edit' ).removeClass('hidden');
   $( '.form-edit' ).attr('action', url);
   $( '.label-edit' ).text(label_text);
   $( '#edit-text' ).attr('placeholder', placeholder);
+}
+
+function add(url, label_text, type) {
+  $( '.form-edit' ).addClass('hidden');
+  $( '.form-add' ).removeClass('hidden');
+  $( '.form-add' ).attr('action', url);
+  $( '.label-add' ).text(label_text);
 }

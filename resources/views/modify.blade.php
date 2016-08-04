@@ -7,7 +7,7 @@
       <span class="glyphicon glyphicon-pencil gly-top"
             aria-hidden="true"></span>
     </button>
-    <button class="invisible-btn add">
+    <button class="invisible-btn add-question">
       <span class="glyphicon glyphicon-plus gly-top"
             aria-hidden="true"></span>
     </button>
@@ -30,7 +30,7 @@
         <span class="glyphicon glyphicon-pencil gly-top"
               aria-hidden="true"></span>
       </button>
-      <button class="invisible-btn add">
+      <button class="invisible-btn add-option">
         <span class="glyphicon glyphicon-plus gly-top"
               aria-hidden="true"></span>
       </button>
@@ -57,12 +57,15 @@
       @endif
     </div>
   @endforeach
+
+  <!-- Delete element form -->
   <form class="form-delete" action="" method="post">
     {{ csrf_field() }}
     <input type="hidden" name="_method" value="DELETE" class="spoofing">
     <input type="submit" class="hidden submit-delete-btn" >
   </form>
 
+  <!-- Edit element form -->
   <form class="form-edit hidden" action="" method="post">
     {{ csrf_field() }}
     <input type="hidden" name="_method" value="PUT" class="spoofing">
@@ -72,10 +75,32 @@
     </div>
     <button type="button" class="btn btn-danger cancel-edit pull-right">
       Cancel
-      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"> </span>
     </button>
-    <button type="submit" class="submit-edit-btn btn btn-default" >
+    <button type="submit" class="submit-edit-btn btn btn-success" >
       Confirm
+      <span class="glyphicon glyphicon-ok" aria-hidden="true"> </span>
+    </button>
+  </form>
+
+  <!-- Add element form -->
+  <form class="form-add hidden" action="" method="post">
+    {{ csrf_field() }}
+    <div class="form-group">
+      <label class="label-add" for="add-text">Some Text:</label>
+      <input type="text"
+             name="title"
+             class="form-control"
+             placeholder="Insert here..."
+             id="add-text">
+    </div>
+    <button type="button" class="btn btn-danger cancel-add pull-right">
+      Cancel
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"> </span>
+    </button>
+    <button type="submit" class="submit-add-btn btn btn-success">
+      Confirm
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"> </span>
     </button>
   </form>
 </div>

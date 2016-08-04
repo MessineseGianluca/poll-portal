@@ -95,6 +95,6 @@ body {
   color: blue;
 }
 
-.add:hover {
+.add-question:hover, .add-option:hover {
   color: green;
 }
