@@ -3,7 +3,7 @@
  */
 $( document ).ready(function() {
   id = $( '.poll-select' ).val();
-  $( '.modify-question#' + id ).removeClass('hidden');
+  $( '#' + id + '.modify-question' ).removeClass('hidden');
 });
 
 /* Handle the 'see more' button for the opened questions */
@@ -40,7 +40,7 @@ $( '.delete-button' ).click(function(){
 $( '.poll-select' ).change(function() {
   $( ' .modify-question ' ).addClass('hidden');
   id = $( '.poll-select' ).val();
-  $( '.modify-question#' + id ).removeClass('hidden');
+  $('#' + id + '.modify-question' ).removeClass('hidden');
   $( '.form-edit' ).addClass('hidden');
 });
 
@@ -66,6 +66,7 @@ $( '.question > .edit' ).click(function() {
   edit(url, 'Change question text:', question_text, 'question');
 });
 
+/* Add new option */
 $( '.question > .add-option' ).click(function() {
     add('/admin/option/new', 'New option text', 'option');
 });
@@ -77,12 +78,14 @@ $( '.question > .trash' ).click(function() {
   $( '.submit-delete-btn' ).trigger( "click" );
 });
 
+/**** Edit option ****/
 $( '.option > .edit ' ).click(function() {
   option_id = $( this ).parent().attr('id');
   option_text = $( '.option#' + option_id + ' p').text();
   edit('/admin/option/' + option_id, 'Change option text:', option_text)
 });
 
+/* Delete option */
 $( '.option > .trash ' ).click(function() {
   option_id = $( this ).parent().attr('id');
   $( '.form-delete' ).attr('action', '/admin/option/' + option_id);
@@ -92,6 +95,10 @@ $( '.option > .trash ' ).click(function() {
 /* Hide form when user clicks cancel button */
 $( '.cancel-edit' ).click(function() {
   $( '.form-edit' ).addClass('hidden');
+});
+
+$( '.cancel-add' ).click(function() {
+  $( '.form-add' ).addClass('hidden');
 });
 
 /* function for editing polls questions and options' names */

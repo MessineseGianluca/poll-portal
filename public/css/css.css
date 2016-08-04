@@ -99,6 +99,6 @@ body {
   color: green;
 }
 
-label {
+.form-edit .form-group label, .form-add .form-group label {
   margin-top: 20px;
 }

@@ -38,7 +38,7 @@
         <span class="glyphicon glyphicon-trash gly-top"
               aria-hidden="true"></span>
       </button>
-      @if($question->type != 'c')
+      @if($question->type != 'a')
         @foreach($question->options as $option)
         <div class="row">
           <div id="{{ $option->id}}" class="col-lg-12 option">
