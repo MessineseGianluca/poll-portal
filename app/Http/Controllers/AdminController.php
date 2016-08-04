@@ -40,31 +40,26 @@ class AdminController extends Controller
 
   public function delete_poll($poll_id)
   {
-      //select questions
-      $questions = Question::where('poll_id', '=', $poll_id)
-          ->select('id')
-          ->get();
-
-      foreach($questions as $question) {
-        //delete all asnwers
-        Answer::where('ques_id', '=', $question->id )
-            ->each(function ($answer, $key) { $answer->delete(); });
-        //delete all options
-        Option::where('ques_id', '=', $question->id )
-            ->each(function ($option, $key) { $option->delete(); });
-        //delete the current question
-        $question->delete();
-      }
-
-      //delete the query
-      Poll::destroy($poll_id);
-
-      return redirect('/admin');
+    /* Delete all questions, answers, options linked to the poll */
+    $poll = Poll::where('id', '=', $poll_id)
+      ->with([
+        'questions.answers' => function ($query) {
+          $query->each(function($answer) { $answer->delete(); });
+        },
+        'questions.options' => function ($query) {
+          $query->each(function($option) { $option->delete(); });
+        },
+        'questions' => function ($query) {
+          $query->each(function($question) { $question->delete(); });
+        }])
+      ->first();
+    Poll::destroy($poll_id);
+    return redirect('/admin');
   }
 
   public function delete_question($question_id)
   {
-    // Delete options and answers
+    // Delete all options and answers linked to the question
     $question = Question::where('id', '=', $question_id)
       ->with([
         'options' => function ($query) {
