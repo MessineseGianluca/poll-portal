@@ -98,3 +98,7 @@ body {
 .add-question:hover, .add-option:hover {
   color: green;
 }
+
+label {
+  margin-top: 20px;
+}

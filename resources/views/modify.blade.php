@@ -72,12 +72,22 @@
     <div class="form-group">
       <label class="label-edit" for="edit-text">Some Text:</label>
       <input type="text" name="title" class="form-control" id="edit-text">
+
+      <!-- eventual question-type input -->
+      <span class="edit-ques-type hidden">
+        <label class="" for="ques-type">Select type:</label>
+        <select class="form-control" id="ques-type" name="ques_type" disabled>
+          <option value="a">opened question</option>
+          <option value="b">single answer question</option>
+          <option value="c">multiple answer question</option>
+        </select>
+      </span>
     </div>
     <button type="button" class="btn btn-danger cancel-edit pull-right">
       Cancel
       <span class="glyphicon glyphicon-remove" aria-hidden="true"> </span>
     </button>
-    <button type="submit" class="submit-edit-btn btn btn-success" >
+    <button type="submit" class="submit-edit-btn btn btn-success">
       Confirm
       <span class="glyphicon glyphicon-ok" aria-hidden="true"> </span>
     </button>
@@ -93,6 +103,16 @@
              class="form-control"
              placeholder="Insert here..."
              id="add-text">
+
+      <!-- eventual question-type input -->
+      <span class="add-ques-type hidden">
+        <label class="" for="ques-type">Select type:</label>
+        <select class="form-control" id="ques-type" name="ques_type" disabled>
+          <option value="a">opened question</option>
+          <option value="b">single answer question</option>
+          <option value="c">multiple answer question</option>
+        </select>
+      </span>
     </div>
     <button type="button" class="btn btn-danger cancel-add pull-right">
       Cancel
