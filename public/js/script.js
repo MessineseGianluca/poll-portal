@@ -4,6 +4,7 @@
 $( document ).ready(function() {
   id = $( '.question-select' ).val();
   $( '#' + id + '.modify-question' ).removeClass('hidden');
+  $( '.ques_id' ).val(id);
 });
 
 /* Handle the 'see more' button for the opened questions */
@@ -42,6 +43,7 @@ $( '.question-select' ).change(function() {
   id = $( '.question-select' ).val();
   $('#' + id + '.modify-question' ).removeClass('hidden');
   $( '.form-edit' ).addClass('hidden');
+  $( '.ques_id' ).val(id);
 });
 
 

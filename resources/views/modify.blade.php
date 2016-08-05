@@ -30,15 +30,15 @@
         <span class="glyphicon glyphicon-pencil gly-top"
               aria-hidden="true"></span>
       </button>
-      <button class="invisible-btn add-option">
-        <span class="glyphicon glyphicon-plus gly-top"
-              aria-hidden="true"></span>
-      </button>
       <button class="invisible-btn trash">
         <span class="glyphicon glyphicon-trash gly-top"
               aria-hidden="true"></span>
       </button>
       @if($question->type != 'a')
+        <button class="invisible-btn add-option">
+          <span class="glyphicon glyphicon-plus gly-top"
+                aria-hidden="true"></span>
+        </button>
         @foreach($question->options as $option)
         <div class="row">
           <div id="{{ $option->id}}" class="col-lg-12 option">
@@ -106,6 +106,7 @@
   <form class="form-add hidden" action="" method="post">
     {{ csrf_field() }}
     <input type="hidden" name="poll_id" value="{{ $poll->id }}">
+    <input type="hidden" class="ques_id" name="ques_id" value="">
     <div class="form-group">
       <label class="label-add" for="add-text">Some Text:</label>
       <input type="text"

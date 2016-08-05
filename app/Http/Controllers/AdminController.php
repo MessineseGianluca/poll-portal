@@ -98,7 +98,6 @@ class AdminController extends Controller
   }
 
   public function create_question(Request $request) {
-
     if(!empty($request->input('title'))) {
       $question = new Question;
       $question->text = $request->input('title');
@@ -107,6 +106,15 @@ class AdminController extends Controller
       $question->save();
     }
     return redirect('/admin/' . $request->input('poll_id'));
+  }
 
+  public function create_option(Request $request) {
+    if(!empty($request->input('title'))) {
+      $option = new Option;
+      $option->text = $request->input('title');
+      $option->ques_id = $request->input('ques_id');
+      $option->save();
+    }
+    return redirect('/admin/' . $request->input('poll_id'));
   }
 }
