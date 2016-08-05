@@ -128,5 +128,19 @@ class AdminController extends Controller
     return redirect('/admin/' . $poll_id);
   }
 
-
+  public function modify_question(Request $request, $question_id) {
+    $question = Question::where('id', '=', $question_id)
+      ->with('options', 'answers')->first();
+    if(!empty($request->input('title')))
+      $question->text = $request->input('title');
+    /* if the ques type is opened, then change
+       all answers and options related to it */  
+    if($request->input('ques_type') == 'a') {
+      $question->options()->each(function($option){ $option->delete(); });
+      $question->answers()->each(function($option){ $option->delete(); });
+    }
+    $question->type = $request->input('ques_type');
+    $question->save();
+    return redirect('/admin/' . $question->poll_id);
+  }
 }

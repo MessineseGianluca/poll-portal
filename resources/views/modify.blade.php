@@ -71,7 +71,11 @@
     <input type="hidden" name="_method" value="PUT" class="spoofing">
     <div class="form-group">
       <label class="label-edit" for="edit-text">Some Text:</label>
-      <input type="text" name="title" class="form-control" id="edit-text">
+      <input type="text"
+             name="title"
+             class="form-control"
+             id="edit-text" 
+             maxlength="255">
 
       <!-- eventual question-type input -->
       <span class="edit-ques-type hidden">
