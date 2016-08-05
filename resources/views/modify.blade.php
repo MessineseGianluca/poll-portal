@@ -83,12 +83,12 @@
         </select>
       </span>
       <span class="edit-poll-date hidden">
-        <label for="poll-start-date">Modify start date:</label>
-        <input type="date" id="poll-start-date" name="start_date"
+        <label for="edit-poll-start-date">Modify start date:</label>
+        <input type="date" id="edit-poll-start-date" name="start_date"
                class="form-control" value="{{ $poll->start_date }}" disabled>
 
-        <label class="" for="poll-end-date">Modify end date:</label>
-        <input type="datetime" id="poll-end-date" name="end_date"
+        <label class="" for="edit-poll-end-date">Modify end date:</label>
+        <input type="date" id="edit-poll-end-date" name="end_date"
                class="form-control" value="{{ $poll->end_date }}" disabled>
       </span>
     </div>
@@ -125,14 +125,6 @@
           <option value="c">multiple answer question</option>
         </select>
       </span>
-      <!--
-      <span class="add-poll-date hidden">
-        <label for="poll-start-date">Select start date:</label>
-        <input type="date" id="poll-start-date" name="start_date" disabled>
-        <label class="" for="poll-end-date">Select start date:</label>
-        <input type="date" id="poll-end-date" name="end_date" disabled>
-      </span>
-      -->
     </div>
     <button type="button" class="btn btn-danger cancel-add pull-right">
       Cancel

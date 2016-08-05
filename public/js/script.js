@@ -120,6 +120,8 @@ function edit(url, label_text, placeholder, type) {
   if(type === 'poll') {
     $( '.edit-poll-date' ).removeClass('hidden');
     $( '.edit-poll-date input' ).prop('disabled', false);
+    min_date =  $( ' #edit-poll-start-date' ).val()
+    $( ' #edit-poll-end-date' ).attr('min', min_date);
   } else {
     $( '.edit-poll-date' ).addClass('hidden');
     $( '.edit-poll-date input' ).prop('disabled', true);

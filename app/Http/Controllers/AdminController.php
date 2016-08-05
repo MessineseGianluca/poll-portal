@@ -117,4 +117,16 @@ class AdminController extends Controller
     }
     return redirect('/admin/' . $request->input('poll_id'));
   }
+
+  public function modify_poll(Request $request, $poll_id) {
+    $poll = Poll::find($poll_id);
+    if(!empty($request->input('title')))
+      $poll->title = $request->input('title');
+    $poll->start_date = $request->input('start_date');
+    $poll->end_date = $request->input('end_date');
+    $poll->save();
+    return redirect('/admin/' . $poll_id);
+  }
+
+
 }
