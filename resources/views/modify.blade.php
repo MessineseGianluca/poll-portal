@@ -105,12 +105,14 @@
   <!-- Add element form -->
   <form class="form-add hidden" action="" method="post">
     {{ csrf_field() }}
+    <input type="hidden" name="poll_id" value="{{ $poll->id }}">
     <div class="form-group">
       <label class="label-add" for="add-text">Some Text:</label>
       <input type="text"
              name="title"
              class="form-control"
              placeholder="Insert here..."
+             maxlength="255"
              id="add-text">
 
       <!-- eventual question-type input -->

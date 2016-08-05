@@ -34,7 +34,7 @@ class AdminController extends Controller
           ->select('id', 'title', 'start_date', 'end_date')
           ->with('questions', 'questions.options')
           ->first();
-      /* Convert datetime in date format */    
+      /* Convert datetime in date format */
       $poll->start_date = strtotime($poll->start_date);
       $poll->start_date = date('Y-m-d', $poll->start_date);
       $poll->end_date = strtotime($poll->end_date);
@@ -95,5 +95,18 @@ class AdminController extends Controller
     $poll_id = $option->question->poll_id;
     Option::destroy($option->id);
     return redirect('/admin/' . $poll_id);
+  }
+
+  public function create_question(Request $request) {
+
+    if(!empty($request->input('title'))) {
+      $question = new Question;
+      $question->text = $request->input('title');
+      $question->type = $request->input('ques_type');
+      $question->poll_id = $request->input('poll_id');
+      $question->save();
+    }
+    return redirect('/admin/' . $request->input('poll_id'));
+
   }
 }
