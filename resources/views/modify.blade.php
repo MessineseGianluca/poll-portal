@@ -14,7 +14,7 @@
   </div>
   <div class="form-group">
     <label for="sel1">Select a question:</label>
-      <select class="form-control poll-select" id="sel1">
+      <select class="form-control question-select" id="sel1">
         @foreach($poll->questions as $question)
           <option value="{{ $question->id }}">
             {{ $question->text }}
@@ -82,6 +82,15 @@
           <option value="c">multiple answer question</option>
         </select>
       </span>
+      <span class="edit-poll-date hidden">
+        <label for="poll-start-date">Modify start date:</label>
+        <input type="date" id="poll-start-date" name="start_date"
+               class="form-control" value="{{ $poll->start_date }}" disabled>
+
+        <label class="" for="poll-end-date">Modify end date:</label>
+        <input type="datetime" id="poll-end-date" name="end_date"
+               class="form-control" value="{{ $poll->end_date }}" disabled>
+      </span>
     </div>
     <button type="button" class="btn btn-danger cancel-edit pull-right">
       Cancel
@@ -106,13 +115,21 @@
 
       <!-- eventual question-type input -->
       <span class="add-ques-type hidden">
-        <label class="" for="ques-type">Select type:</label>
+        <label for="ques-type">Select type:</label>
         <select class="form-control" id="ques-type" name="ques_type" disabled>
           <option value="a">opened question</option>
           <option value="b">single answer question</option>
           <option value="c">multiple answer question</option>
         </select>
       </span>
+      <!--
+      <span class="add-poll-date hidden">
+        <label for="poll-start-date">Select start date:</label>
+        <input type="date" id="poll-start-date" name="start_date" disabled>
+        <label class="" for="poll-end-date">Select start date:</label>
+        <input type="date" id="poll-end-date" name="end_date" disabled>
+      </span>
+      -->
     </div>
     <button type="button" class="btn btn-danger cancel-add pull-right">
       Cancel

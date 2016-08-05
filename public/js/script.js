@@ -2,7 +2,7 @@
  * in modify poll page,after the loadpage
  */
 $( document ).ready(function() {
-  id = $( '.poll-select' ).val();
+  id = $( '.question-select' ).val();
   $( '#' + id + '.modify-question' ).removeClass('hidden');
 });
 
@@ -37,19 +37,19 @@ $( '.delete-button' ).click(function(){
 
 
 /* Show the data of the selected question in modify-poll page */
-$( '.poll-select' ).change(function() {
+$( '.question-select' ).change(function() {
   $( ' .modify-question ' ).addClass('hidden');
-  id = $( '.poll-select' ).val();
+  id = $( '.question-select' ).val();
   $('#' + id + '.modify-question' ).removeClass('hidden');
   $( '.form-edit' ).addClass('hidden');
 });
 
 
-/*********** Edit poll_name **************/
+/*********** Edit poll **************/
 $( '.poll > .edit' ).click(function() {
   poll_text = $( '.poll h1' ).text();
   poll_id = $( '.poll' ).attr('id');
-  edit('/admin/poll/' + poll_id, 'Change poll title:', poll_text);
+  edit('/admin/poll/' + poll_id, 'Change poll title:', poll_text, 'poll');
 });
 
 
@@ -115,6 +115,14 @@ function edit(url, label_text, placeholder, type) {
     $( '.edit-ques-type' ).addClass('hidden');
     $( '.edit-ques-type select' ).prop('disabled', true);
   }
+  if(type === 'poll') {
+    $( '.edit-poll-date' ).removeClass('hidden');
+    $( '.edit-poll-date input' ).prop('disabled', false);
+  } else {
+    $( '.edit-poll-date' ).addClass('hidden');
+    $( '.edit-poll-date input' ).prop('disabled', true);
+  }
+
 }
 
 function add(url, label_text, type) {
@@ -128,5 +136,12 @@ function add(url, label_text, type) {
   } else {
     $( '.add-ques-type' ).addClass('hidden');
     $( '.add-ques-type select' ).prop('disabled', true);
+  }
+  if(type === 'poll') {
+    $( '.add-poll-date' ).removeClass('hidden');
+    $( '.add-poll-date input' ).prop('disabled', false);
+  } else {
+    $( '.add-poll-date' ).addClass('hidden');
+    $( '.add-poll-date input' ).prop('disabled', true);
   }
 }

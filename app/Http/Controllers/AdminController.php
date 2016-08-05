@@ -31,9 +31,14 @@ class AdminController extends Controller
   public function modify_poll_view($poll_id)
   {
       $poll = Poll::where('id', '=', $poll_id)
-          ->select('id', 'title')
+          ->select('id', 'title', 'start_date', 'end_date')
           ->with('questions', 'questions.options')
           ->first();
+      /* Convert datetime in date format */    
+      $poll->start_date = strtotime($poll->start_date);
+      $poll->start_date = date('Y-m-d', $poll->start_date);
+      $poll->end_date = strtotime($poll->end_date);
+      $poll->end_date = date('Y-m-d', $poll->end_date);
 
       return view('modify', ['poll' => $poll]);
   }
@@ -77,7 +82,18 @@ class AdminController extends Controller
 
   public function delete_option($option_id)
   {
-    $option = Option::where('id', '=', $option_id)->first();
 
-
+    $option = Option::where('id', '=', $option_id)
+    ->with([
+      'answers' => function($query) {
+        $query->each(function($answer) { $answer->delete(); });
+      },
+      'question' => function($query) {
+        $query->first();
+      }])
+    ->first();
+    $poll_id = $option->question->poll_id;
+    Option::destroy($option->id);
+    return redirect('/admin/' . $poll_id);
+  }
 }

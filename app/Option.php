@@ -10,4 +10,9 @@ class Option extends Model
   {
       return $this->hasMany('App\Answer');
   }
+
+  public function question()
+  {
+      return $this->belongsTo('App\Question', 'ques_id');
+  }
 }
