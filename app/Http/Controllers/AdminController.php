@@ -130,11 +130,12 @@ class AdminController extends Controller
 
   public function modify_question(Request $request, $question_id) {
     $question = Question::where('id', '=', $question_id)
-      ->with('options', 'answers')->first();
+      ->with('options', 'answers')
+      ->first();
     if(!empty($request->input('title')))
       $question->text = $request->input('title');
-    /* if the ques type is opened, then change
-       all answers and options related to it */  
+    /* if the question type is 'opened', then change
+       all answers and options related to it */
     if($request->input('ques_type') == 'a') {
       $question->options()->each(function($option){ $option->delete(); });
       $question->answers()->each(function($option){ $option->delete(); });
@@ -142,5 +143,18 @@ class AdminController extends Controller
     $question->type = $request->input('ques_type');
     $question->save();
     return redirect('/admin/' . $question->poll_id);
+  }
+
+  public function modify_option(Request $request, $option_id) {
+    $option = Option::where('id', '=', $option_id)
+      ->with([
+        'question' => function($query) {
+            $query->first();
+        }])
+      ->first();
+    if(!empty($request->input('title')))
+      $option->text = $request->input('title');
+    $option->save();
+    return redirect('/admin/' . $option->question->poll_id);
   }
 }
