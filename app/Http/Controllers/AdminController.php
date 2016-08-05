@@ -23,11 +23,6 @@ class AdminController extends Controller
       return view ('admin', ['polls' => Poll::all()]);
   }
 
-  public function create_poll()
-  {
-      return view('create');
-  }
-
   public function modify_poll_view($poll_id)
   {
       $poll = Poll::where('id', '=', $poll_id)
@@ -95,6 +90,22 @@ class AdminController extends Controller
     $poll_id = $option->question->poll_id;
     Option::destroy($option->id);
     return redirect('/admin/' . $poll_id);
+  }
+
+  public function create_poll_view()
+  {
+      return view('create_poll');
+  }
+
+  public function create_poll(Request $request)
+  {
+    $poll = new Poll;
+    $poll->title = $request->input('title');
+    $poll->start_date = $request->input('start_date');
+    $poll->end_date = $request->input('end_date');
+    $poll->save();
+
+    return redirect('/admin/' . $poll->id);
   }
 
   public function create_question(Request $request) {

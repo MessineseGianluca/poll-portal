@@ -29,6 +29,7 @@ Route::put('/account/email', 'HomeController@change_email');
 /**************************** Admin Routes *************************/
 Route::get('/admin', 'AdminController@index');
 Route::get('/admin/{poll}', 'AdminController@modify_poll_view');
+Route::get('/admin/poll/new', 'AdminController@create_poll_view');
 Route::post('/admin/poll/new', 'AdminController@create_poll');
 Route::post('/admin/question/new', 'AdminController@create_question');
 Route::post('/admin/option/new', 'AdminController@create_option');

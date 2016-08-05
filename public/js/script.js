@@ -15,7 +15,7 @@ $( '.see-more > button' ).click(function() {
 
 /* Handle the new-poll button in /Admin */
 $( '.create-poll' ).click(function() {
-  window.open('/admin/new', '_self')
+  window.open('/admin/poll/new', '_self')
 });
 
 
@@ -149,3 +149,9 @@ function add(url, label_text, type) {
     $( '.add-poll-date input' ).prop('disabled', true);
   }
 }
+
+$( '.confirm-add-poll' ).click(function() {
+  min_date = $( '#poll-start-date' ).val()
+  $( '#poll-end-date' ).attr('min', min_date);
+  $( '#submit-poll' ).trigger('click');
+});
