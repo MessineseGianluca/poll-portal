@@ -43,6 +43,7 @@ class AdminController extends Controller
     /* Delete all questions, answers, options linked to the poll */
     $poll = Poll::where('id', '=', $poll_id)
       ->with([
+        'users',
         'questions.answers' => function ($query) {
           $query->each(function($answer) { $answer->delete(); });
         },
@@ -53,6 +54,10 @@ class AdminController extends Controller
           $query->each(function($question) { $question->delete(); });
         }])
       ->first();
+    /* delete row in the intermediate table (poll_user)*/
+    foreach ($poll->users as $user) {
+      $user->pivot->delete();
+    }
     Poll::destroy($poll_id);
     return redirect('/admin');
   }
