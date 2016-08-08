@@ -16,7 +16,7 @@ class CreatePollsTable extends Migration
             $table->increments('id');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->char('title', 50);
+            $table->string('title', 50);
             $table->timestamps();
         });
     }

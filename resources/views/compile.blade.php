@@ -9,41 +9,43 @@
   </div>
   <div class="questions">
     <form action='/home/opened/{{ $poll->id }}' method='post'>
-      
+
       {{ csrf_field() }}
 
       @foreach ($questions as $question)
         <div class="row">
             <div class="col-lg-6 col-lg-offset-3">
               <h2><small> · {{ $question->text }}</small></h2>
-                
+
               <div class="row">
                 <div class="col-lg-8 col-lg-offset-1">
-                @if($question->type !== 'a') 
+                @if($question->type !== 'a')
 
                     @if( $question->type == 'b' )
-            	    	
+
             	    	@foreach($question->options as $option)
-                            
+
                       <div class="radio">
-  						          <label>      
-                	    	  <input type="radio" 
+  						          <label>
+                	    	  <input type="radio"
                 	    	         name="answered_ques_{{ $question->id }}"
-                	    	         value="{{ $option->id }}">{{ $option->text }}
+                	    	         value="{{ $option->id }}" required>
+                                 {{ $option->text }}
   							        </label>
   						        </div>
 
                     	@endforeach
-                        
-                    @else 
+
+                    @else
 
                         @foreach($question->options as $option)
-                            
+
                             <div class="checkbox">
     						              <label>
-                	    	        <input type='checkbox' 
-                	    	               name='answered_ques_{{ $question->id }}[]' 
-                	    	               value='{{ $option->id }}'>{{ $option->text }}
+                	    	        <input type='checkbox'
+                	    	               name='answered_ques_{{ $question->id }}[]'
+                	    	               value='{{ $option->id }}'
+                                       required>{{ $option->text }}
                               </label>
                             </div>
 
@@ -52,11 +54,11 @@
                     @endif
 
             	@else
-            	  <textarea class="form-control" 
+            	  <textarea class="form-control"
             	            rows="2"
                           maxlength="255"
                           name="answered_ques_{{ $question->id }}"
-            	            placeholder="insert answer here(max 255)..." 
+            	            placeholder="insert answer here(max 255)..."
             	            required></textarea>
             	@endif
 
@@ -66,9 +68,10 @@
         </div>
 
       @endforeach
-      <div class="row submit">
+      <div class="row confirm">
         <div class="col-lg-6 col-lg-offset-5">
-          <button type="submit" class="btn btn-default">Submit</button>
+          <button type="button"
+                  class="btn btn-default">Confirm</button>
         </div>
       </div>
     </form>

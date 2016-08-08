@@ -14,8 +14,8 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('text', 255);
-            $table->char('type', 20);
+            $table->string('text', 255);
+            $table->char('type', 1);
             $table->integer('poll_id')->unsigned();
             $table->foreign('poll_id')->references('id')->on('polls');
             $table->timestamps();
